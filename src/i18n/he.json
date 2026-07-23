@@ -1,0 +1,47 @@
+{
+  "app.title": "לוח משימות",
+  "settings.open": "הגדרות",
+  "settings.title": "הגדרות",
+  "settings.tab.kids": "ילדים",
+  "settings.tab.columns": "מצבים",
+  "settings.tab.spaces": "מרחבים",
+  "settings.tab.language": "שפה",
+  "settings.close": "סגור",
+
+  "kids.add": "הוסף ילד/ה",
+  "kids.name": "שם",
+  "kids.color": "צבע",
+  "kids.remove": "הסר",
+  "kids.addPlaceholder": "שם הילד/ה החדש/ה",
+
+  "columns.add": "הוסף מצב",
+  "columns.name": "שם",
+  "columns.color": "צבע",
+  "columns.remove": "הסר",
+  "columns.addPlaceholder": "שם המצב החדש",
+  "columns.moveUp": "הזז למעלה",
+  "columns.moveDown": "הזז למטה",
+
+  "spaces.add": "הוסף מרחב",
+  "spaces.name": "שם",
+  "spaces.color": "צבע",
+  "spaces.remove": "הסר",
+  "spaces.addPlaceholder": "שם המרחב החדש",
+  "spaces.apply": "הוסף ללוח",
+  "spaces.applied": "נוסף!",
+  "spaces.tasks": "משימות",
+  "spaces.addTask": "הוסף משימה",
+  "spaces.taskPlaceholder": "שם המשימה החדשה",
+
+  "icon.emoji": "אימוג'י",
+  "icon.upload": "העלה תמונה",
+  "icon.choose": "בחר סמל",
+
+  "language.english": "English",
+  "language.hebrew": "עברית",
+
+  "task.moveTo": "העבר אל...",
+  "task.cancel": "ביטול",
+
+  "board.empty": "אין עדיין משימות. הוסיפו מרחב מההגדרות והוסיפו אותו כאן!"
+}

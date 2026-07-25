@@ -1,0 +1,47 @@
+{
+  "app.title": "Kanban Board",
+  "settings.open": "Settings",
+  "settings.title": "Settings",
+  "settings.tab.kids": "Kids",
+  "settings.tab.columns": "States",
+  "settings.tab.spaces": "Spaces",
+  "settings.tab.language": "Language",
+  "settings.close": "Close",
+
+  "kids.add": "Add Kid",
+  "kids.name": "Name",
+  "kids.color": "Color",
+  "kids.remove": "Remove",
+  "kids.addPlaceholder": "New kid's name",
+
+  "columns.add": "Add State",
+  "columns.name": "Name",
+  "columns.color": "Color",
+  "columns.remove": "Remove",
+  "columns.addPlaceholder": "New state name",
+  "columns.moveUp": "Move up",
+  "columns.moveDown": "Move down",
+
+  "spaces.add": "Add Space",
+  "spaces.name": "Name",
+  "spaces.color": "Color",
+  "spaces.remove": "Remove",
+  "spaces.addPlaceholder": "New space name",
+  "spaces.apply": "Apply to Board",
+  "spaces.applied": "Added!",
+  "spaces.tasks": "Tasks",
+  "spaces.addTask": "Add Task",
+  "spaces.taskPlaceholder": "New task name",
+
+  "icon.emoji": "Emoji",
+  "icon.upload": "Upload Image",
+  "icon.choose": "Choose an icon",
+
+  "language.english": "English",
+  "language.hebrew": "עברית",
+
+  "task.moveTo": "Move to...",
+  "task.cancel": "Cancel",
+
+  "board.empty": "No tasks yet. Add a Space from Settings and apply it here!"
+}

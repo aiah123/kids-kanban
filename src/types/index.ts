@@ -5,6 +5,7 @@ export interface Column {
   name: string;
   color: string;
   order: number;
+  role?: 'in-progress' | 'done';
 }
 
 export interface Icon {

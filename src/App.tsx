@@ -35,6 +35,7 @@ function AppShell() {
 
       {activeBoard && (
         <Board
+          key={activeBoard.id}
           board={activeBoard}
           onMoveTask={(taskId, columnId) =>
             dispatch({ type: 'MOVE_TASK', boardId: activeBoard.id, taskId, columnId })

@@ -1,5 +1,6 @@
 import { useDroppable } from '@dnd-kit/core';
 import type { BoardTask, Column as ColumnType } from '../types';
+import { getColumnRole } from '../state/defaults';
 import { TaskCard } from './TaskCard';
 import { getContrastText } from '../utils/color';
 
@@ -11,6 +12,7 @@ interface ColumnProps {
 }
 
 export function Column({ column, tasks, columns, onMoveTask }: ColumnProps) {
+  const inProgress = getColumnRole(column) === 'in-progress';
   const { setNodeRef, isOver } = useDroppable({ id: column.id });
 
   return (
@@ -32,6 +34,7 @@ export function Column({ column, tasks, columns, onMoveTask }: ColumnProps) {
             <TaskCard
               key={task.id}
               task={task}
+              inProgress={inProgress}
               columns={columns}
               onMove={(columnId) => onMoveTask(task.id, columnId)}
             />

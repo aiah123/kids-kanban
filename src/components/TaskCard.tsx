@@ -2,15 +2,18 @@ import { useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import type { BoardTask, Column } from '../types';
+import { useI18n } from '../i18n/i18n';
 import { MoveSheet } from './MoveSheet';
 
 interface TaskCardProps {
   task: BoardTask;
+  inProgress: boolean;
   columns: Column[];
   onMove: (columnId: string) => void;
 }
 
-export function TaskCard({ task, columns, onMove }: TaskCardProps) {
+export function TaskCard({ task, inProgress, columns, onMove }: TaskCardProps) {
+  const { t } = useI18n();
   const [sheetOpen, setSheetOpen] = useState(false);
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: task.id,
@@ -25,23 +28,28 @@ export function TaskCard({ task, columns, onMove }: TaskCardProps) {
 
   return (
     <>
-      <button
-        ref={setNodeRef}
-        style={style}
-        className="task-card"
-        {...listeners}
-        {...attributes}
-        onClick={() => setSheetOpen(true)}
-      >
-        <span className="task-icon">
-          {task.icon.type === 'emoji' ? (
-            task.icon.value
-          ) : (
-            <img src={task.icon.value} alt="" />
-          )}
-        </span>
-        <span>{task.name}</span>
-      </button>
+      <div className="task-card-wrapper">
+        <button
+          ref={setNodeRef}
+          style={style}
+          className="task-card"
+          {...listeners}
+          {...attributes}
+          onClick={() => setSheetOpen(true)}
+        >
+          <span className="task-icon">
+            {task.icon.type === 'emoji' ? (
+              task.icon.value
+            ) : (
+              <img src={task.icon.value} alt="" />
+            )}
+          </span>
+          <span>{task.name}</span>
+        </button>
+        {inProgress && (
+          <progress className="task-progress" aria-label={`${task.name} · ${t('task.inProgress')}`} />
+        )}
+      </div>
       {sheetOpen && (
         <MoveSheet
           columns={columns}

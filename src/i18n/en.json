@@ -50,6 +50,8 @@
   "language.hebrew": "עברית",
 
   "task.moveTo": "Move to...",
+  "task.inProgress": "In progress",
+  "task.celebration": "Great job!",
   "task.cancel": "Cancel",
 
   "board.empty": "No tasks yet. Add a Space from Settings and apply it here!"

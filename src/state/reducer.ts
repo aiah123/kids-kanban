@@ -1,6 +1,6 @@
 import type { AppState, Board, BoardTask } from '../types';
 import type { Action } from './actions';
-import { localizeRoutineNames, makeDefaultColumns } from './defaults';
+import { getColumnRole, localizeRoutineNames, makeDefaultColumns } from './defaults';
 import { makeId } from './id';
 
 function updateBoard(state: AppState, boardId: string, fn: (board: Board) => Board): AppState {
@@ -75,7 +75,7 @@ export function reducer(state: AppState, action: Action): AppState {
       return updateBoard(state, action.boardId, (board) => ({
         ...board,
         columns: board.columns.map((c) =>
-          c.id === action.columnId ? { ...c, ...action.patch } : c
+          c.id === action.columnId ? { ...c, ...action.patch, role: getColumnRole(c) } : c
         ),
       }));
 

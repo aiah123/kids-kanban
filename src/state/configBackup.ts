@@ -24,7 +24,8 @@ function isNamedColor(value: unknown): value is Record<string, unknown> & {
 }
 
 function isColumn(value: unknown): value is Column {
-  return isNamedColor(value) && Number.isFinite(value.order);
+  return isNamedColor(value) && Number.isFinite(value.order)
+    && (value.role === undefined || value.role === 'in-progress' || value.role === 'done');
 }
 
 function isIcon(value: unknown): value is Icon {

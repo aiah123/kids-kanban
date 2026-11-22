@@ -81,12 +81,23 @@ export function detectLanguage(): Language {
     : 'en';
 }
 
+export function getColumnRole(column: Column): Column['role'] {
+  if (column.role) return column.role;
+
+  const name = column.name.trim().toLowerCase();
+  if (name === COLUMN_TEXT.en[1].toLowerCase() || name === COLUMN_TEXT.he[1]) return 'in-progress';
+  if (name === COLUMN_TEXT.en[2].toLowerCase() || name === COLUMN_TEXT.he[2]) return 'done';
+}
+
+const DEFAULT_COLUMN_ROLES: Column['role'][] = [undefined, 'in-progress', 'done'];
+
 export function makeDefaultColumns(language: Language): Column[] {
   return COLUMN_TEXT[language].map((name, i) => ({
     id: makeId(),
     name,
     color: COLUMN_COLORS[i],
     order: i,
+    role: DEFAULT_COLUMN_ROLES[i],
   }));
 }
 

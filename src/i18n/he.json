@@ -50,6 +50,8 @@
   "language.hebrew": "עברית",
 
   "task.moveTo": "העבר אל...",
+  "task.inProgress": "בתהליך",
+  "task.celebration": "כל הכבוד!",
   "task.cancel": "ביטול",
 
   "board.empty": "אין עדיין משימות. הוסיפו מרחב מההגדרות והוסיפו אותו כאן!"

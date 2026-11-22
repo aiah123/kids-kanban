@@ -8,6 +8,8 @@ See [PLAN.md](./PLAN.md) for the full design and architecture notes.
 
 Open [kids-kanban.html](./kids-kanban.html) on GitHub and tap **Download raw file**. Open the downloaded file from your device’s Downloads folder in a browser that supports local HTML files. The board and audio work offline.
 
+GitHub Actions builds the standalone HTML for each push to main and pull request. Download the `kids-kanban-html` artifact from the workflow run, or download `kids-kanban.html` directly from the Assets section of a published GitHub release. The HTML checked into the repository is a snapshot.
+
 ## Getting started
 
 ```bash
@@ -22,6 +24,7 @@ Open the printed local URL on a tablet (or in a touch-emulated browser) to try i
 - `npm run dev` — start the dev server
 - `npm run build` — type-check and build for production
 - `npm run preview` — preview the production build locally
+- `npm run build:standalone` — create `dist/kids-kanban.html` for offline use
 - `npm run lint` — run oxlint
 
 ## How it works

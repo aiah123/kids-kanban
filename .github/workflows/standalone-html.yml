@@ -1,0 +1,46 @@
+name: Build standalone HTML
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build:standalone
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kids-kanban-html
+          path: dist/kids-kanban.html
+          if-no-files-found: error
+
+  attach-to-release:
+    if: github.event_name == 'release'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: kids-kanban-html
+      - name: Upload HTML to the published release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: gh release upload --repo "$REPOSITORY" --clobber -- "$RELEASE_TAG" kids-kanban.html

@@ -1,6 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import type { Action } from './actions';
-import { makeDefaultState } from './defaults';
+import { localizeRoutineNames, makeDefaultState } from './defaults';
 import { reducer } from './reducer';
 import { useLocalStorage } from './useLocalStorage';
 
@@ -15,7 +15,7 @@ interface StoreContextValue {
 const StoreContext = createContext<StoreContextValue | null>(null);
 
 function StoreBridge({ children }: { children: ReactNode }) {
-  const [state, setState, restoreState] = useLocalStorage(STORAGE_KEY, makeDefaultState);
+  const [state, setState, restoreState] = useLocalStorage(STORAGE_KEY, makeDefaultState, localizeRoutineNames);
 
   const dispatch = (action: Action) => {
     setState((prev) => reducer(prev, action));

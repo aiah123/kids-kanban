@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
-export function useLocalStorage<T>(key: string, initial: () => T) {
+export function useLocalStorage<T>(key: string, initial: () => T, restore: (value: T) => T) {
   const [value, setValue] = useState<T>(() => {
     try {
       const raw = localStorage.getItem(key);
-      return raw ? (JSON.parse(raw) as T) : initial();
+      return raw ? restore(JSON.parse(raw) as T) : initial();
     } catch {
       return initial();
     }
@@ -23,9 +23,10 @@ export function useLocalStorage<T>(key: string, initial: () => T) {
   }, [key, value]);
 
   function saveAndReplace(next: T) {
-    localStorage.setItem(key, JSON.stringify(next));
+    const restored = restore(next);
+    localStorage.setItem(key, JSON.stringify(restored));
     window.clearTimeout(timeoutRef.current);
-    setValue(next);
+    setValue(restored);
   }
 
   return [value, setValue, saveAndReplace] as const;

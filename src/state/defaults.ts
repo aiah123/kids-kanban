@@ -44,6 +44,37 @@ const SPACE_SEEDS: SpaceSeed[] = [
   },
 ];
 
+const SPACE_NAMES = SPACE_SEEDS.map((seed) => seed.name);
+const TASK_NAMES = SPACE_SEEDS.flatMap((seed) => seed.tasks.map((task) => task.name));
+
+function translateName<T extends { name: string }>(
+  item: T,
+  names: Record<Language, string>[],
+  language: Language,
+): T {
+  const otherLanguage = language === 'he' ? 'en' : 'he';
+  const match = names.find((name) => name[otherLanguage] === item.name);
+  return match ? { ...item, name: match[language] } : item;
+}
+
+export function localizeRoutineNames(
+  state: AppState,
+  language: Language = state.settings.language,
+): AppState {
+  return {
+    ...state,
+    settings: { ...state.settings, language },
+    spaces: state.spaces.map((space) => ({
+      ...translateName(space, SPACE_NAMES, language),
+      tasks: space.tasks.map((task) => translateName(task, TASK_NAMES, language)),
+    })),
+    boards: state.boards.map((board) => ({
+      ...board,
+      tasks: board.tasks.map((task) => translateName(task, TASK_NAMES, language)),
+    })),
+  };
+}
+
 export function detectLanguage(): Language {
   return typeof navigator !== 'undefined' && navigator.language?.toLowerCase().startsWith('he')
     ? 'he'

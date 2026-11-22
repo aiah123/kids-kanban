@@ -1,6 +1,6 @@
 import type { AppState, Board, BoardTask } from '../types';
 import type { Action } from './actions';
-import { makeDefaultColumns } from './defaults';
+import { localizeRoutineNames, makeDefaultColumns } from './defaults';
 import { makeId } from './id';
 
 function updateBoard(state: AppState, boardId: string, fn: (board: Board) => Board): AppState {
@@ -13,7 +13,7 @@ function updateBoard(state: AppState, boardId: string, fn: (board: Board) => Boa
 export function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case 'SET_LANGUAGE':
-      return { ...state, settings: { ...state.settings, language: action.language } };
+      return localizeRoutineNames(state, action.language);
 
     case 'SET_ACTIVE_KID':
       return { ...state, activeKidId: action.kidId };

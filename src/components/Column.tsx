@@ -16,17 +16,14 @@ export function Column({ column, tasks, columns, onMoveTask }: ColumnProps) {
   const { setNodeRef, isOver } = useDroppable({ id: column.id });
 
   return (
-    <div className="column">
+    <div ref={setNodeRef} className={`column ${isOver ? 'column-drop-target' : ''}`}>
       <div
         className="column-header"
         style={{ background: column.color, color: getContrastText(column.color) }}
       >
         {column.name}
       </div>
-      <div
-        ref={setNodeRef}
-        className={`task-list ${isOver ? 'column-drop-target' : ''}`}
-      >
+      <div className="task-list">
         {tasks
           .slice()
           .sort((a, b) => a.order - b.order)

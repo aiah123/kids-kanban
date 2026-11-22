@@ -165,7 +165,8 @@ select {
   font-weight: 600;
   text-align: start;
   color: #1e293b;
-  touch-action: manipulation;
+  touch-action: none;
+  user-select: none;
 }
 
 .task-card:active {
@@ -353,6 +354,10 @@ select {
   position: relative;
 }
 
+.task-card-dragging {
+  z-index: 2;
+}
+
 .task-card-wrapper .task-card {
   width: 100%;
 }
@@ -371,15 +376,15 @@ select {
   position: fixed;
   z-index: 20;
   inset-inline: 0;
-  inset-block-start: 24%;
-  width: max-content;
+  inset-block-start: 20%;
+  width: min(330px, 86vw);
   margin-inline: auto;
   display: grid;
   justify-items: center;
   gap: 4px;
-  padding: 12px 24px;
-  border-radius: 24px;
-  background: #fff;
+  padding: 18px 12px;
+  border-radius: 28px;
+  background: radial-gradient(ellipse at 50% 40%, #fff 12%, #fef3c7 78%);
   color: #14532d;
   box-shadow: 0 8px 30px #0f172a33;
   font-size: 1.4rem;
@@ -387,9 +392,56 @@ select {
   pointer-events: none;
 }
 
+.celebration-stage {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 146px;
+  place-items: center;
+  overflow: hidden;
+}
+
+.celebration-dancer {
+  position: relative;
+  animation: celebration-dance 540ms ease-in-out 9;
+}
+
+.celebration-burst {
+  position: absolute;
+  inset-block-start: 43%;
+  inset-inline-start: 27%;
+  --burst-delay: 30ms;
+}
+
+.celebration-burst:nth-child(2) {
+  inset-block-start: 38%;
+  inset-inline-start: 73%;
+  --burst-delay: 520ms;
+}
+
+.celebration-burst:nth-child(3) {
+  inset-block-start: 58%;
+  inset-inline-start: 51%;
+  --burst-delay: 1040ms;
+}
+
+.celebration-spark {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--spark-color);
+  box-shadow: 0 0 7px var(--spark-color);
+  animation: celebration-firework 2400ms var(--burst-delay) ease-out 2 both;
+}
+
+.celebration-message {
+  position: relative;
+}
+
 .celebration-icon {
   display: block;
-  font-size: 3.6rem;
+  font-size: 5rem;
   line-height: 1.2;
   animation-duration: 950ms;
   animation-timing-function: ease-out;
@@ -503,9 +555,60 @@ select {
   28%, 80% { transform: rotate(20deg) scale(1.1); filter: drop-shadow(0 0 10px #a78bfa); }
 }
 
+@keyframes celebration-dance {
+  0%, 100% { transform: translateY(10px) scale(1.1, .9); }
+  43% { transform: translateY(-23px) rotate(-12deg); }
+  65% { transform: translateY(-12px) rotate(12deg); }
+}
+
+@keyframes celebration-firework {
+  0% { opacity: 0; transform: scale(.2); }
+  18% { opacity: 1; }
+  35% { opacity: .8; }
+  48%, 100% { opacity: 0; transform: translate(var(--spark-x), var(--spark-y)) scale(.35); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .celebration-icon { animation: none; }
+  .celebration-icon, .celebration-dancer { animation: none; }
+  .celebration-burst { display: none; }
   .task-progress { appearance: none; background: #bae6fd; border-radius: 4px; }
   .task-progress::-webkit-progress-bar { background: #bae6fd; border-radius: 4px; }
   .task-progress::-webkit-progress-value { background: #0284c7; }
+}
+
+.task-countdown {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.task-countdown span {
+  display: grid;
+  place-items: center;
+  min-width: 3em;
+  min-height: 1.8em;
+  padding-inline: .22em;
+  border-radius: .4em;
+  color: #fff;
+  background: #075985;
+  box-shadow: 0 8px 32px #0f172a55;
+  font-size: clamp(2.4rem, 13vw, 7rem);
+  font-weight: 900;
+  line-height: 1;
+  animation: countdown-pop 280ms ease-out both;
+}
+
+.task-countdown [data-step="1"] { background: #9a3412; }
+.task-countdown [data-step="2"] { background: #166534; }
+
+@keyframes countdown-pop {
+  from { transform: scale(.75); opacity: .6; }
+  70% { transform: scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .task-countdown span { animation: none; }
 }

@@ -28,7 +28,7 @@ export function TaskCard({ task, inProgress, columns, onMove }: TaskCardProps) {
 
   return (
     <>
-      <div className="task-card-wrapper">
+      <div className={`task-card-wrapper${isDragging ? ' task-card-dragging' : ''}`}>
         <button
           ref={setNodeRef}
           style={style}

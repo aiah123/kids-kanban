@@ -4,6 +4,10 @@ A touch-friendly kanban board for kids' daily routines. Supports Hebrew (RTL) an
 
 See [PLAN.md](./PLAN.md) for the full design and architecture notes.
 
+## Open on a tablet
+
+Open [kids-kanban.html](./kids-kanban.html) on GitHub and tap **Download raw file**. Open the downloaded file from your device’s Downloads folder in a browser that supports local HTML files. The board and audio work offline.
+
 ## Getting started
 
 ```bash
@@ -26,3 +30,8 @@ Open the printed local URL on a tablet (or in a touch-emulated browser) to try i
 - Tap a task card to move it between states; drag-and-drop between columns also works (touch and pointer).
 - The gear icon in the header opens Settings, where kids, states, spaces/tasks, and language are all configurable.
 - Installable as a PWA ("Add to Home Screen") for a fullscreen, app-like experience on a tablet.
+
+## Audio credits
+
+- Countdown voice: [ready set go by Alivvie](https://freesound.org/people/Alivvie/sounds/451271/), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The recording was retimed and mixed with percussion and piano.
+- Celebration applause: [Applause, enthusiastic, short, some cheering by peridactyloptrix](https://freesound.org/people/peridactyloptrix/sounds/196092/), CC0. The recording was trimmed and mixed with a piano fanfare rendered with the TimGM6mb soundfont.

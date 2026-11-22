@@ -6,6 +6,8 @@ const COLUMN_TEXT: Record<Language, string[]> = {
   he: ['לא התחלתי', 'בתהליך', 'הושלם'],
 };
 
+const COLUMN_NAMES = COLUMN_TEXT.en.map((en, index) => ({ en, he: COLUMN_TEXT.he[index] }));
+
 const COLUMN_COLORS = ['#fbbf24', '#60a5fa', '#4ade80'];
 
 const KID_NAME: Record<Language, string> = {
@@ -63,13 +65,18 @@ export function localizeRoutineNames(
 ): AppState {
   return {
     ...state,
-    settings: { ...state.settings, language },
+    settings: {
+      ...state.settings,
+      language,
+      defaultColumns: state.settings.defaultColumns.map((column) => translateName(column, COLUMN_NAMES, language)),
+    },
     spaces: state.spaces.map((space) => ({
       ...translateName(space, SPACE_NAMES, language),
       tasks: space.tasks.map((task) => translateName(task, TASK_NAMES, language)),
     })),
     boards: state.boards.map((board) => ({
       ...board,
+      columns: board.columns.map((column) => translateName(column, COLUMN_NAMES, language)),
       tasks: board.tasks.map((task) => translateName(task, TASK_NAMES, language)),
     })),
   };

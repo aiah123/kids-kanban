@@ -10,6 +10,8 @@ Open [kids-kanban.html](./kids-kanban.html) on GitHub and tap **Download raw fil
 
 GitHub Actions builds the standalone HTML for each push to main and pull request. Download the `kids-kanban-html` artifact from the workflow run, or download `kids-kanban.html` directly from the Assets section of a published GitHub release. The HTML checked into the repository is a snapshot.
 
+To publish a new version, push a version tag such as `v1.0.1` from the commit you want to release. GitHub Actions creates the release and attaches the HTML. Share the [latest direct download link](https://github.com/aiah123/kids-kanban/releases/latest/download/kids-kanban.html).
+
 ## Getting started
 
 ```bash

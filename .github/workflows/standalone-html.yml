@@ -3,10 +3,9 @@ name: Build standalone HTML
 on:
   push:
     branches: [main]
+    tags: ['v[0-9]+.[0-9]+.[0-9]+']
   pull_request:
   workflow_dispatch:
-  release:
-    types: [published]
 
 permissions:
   contents: read
@@ -28,8 +27,8 @@ jobs:
           path: dist/kids-kanban.html
           if-no-files-found: error
 
-  attach-to-release:
-    if: github.event_name == 'release'
+  publish-release:
+    if: github.event_name == 'push' && github.ref_type == 'tag'
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -38,9 +37,16 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: kids-kanban-html
-      - name: Upload HTML to the published release
+      - name: Publish the release with the HTML file
         env:
           GH_TOKEN: ${{ github.token }}
           REPOSITORY: ${{ github.repository }}
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
-        run: gh release upload --repo "$REPOSITORY" --clobber -- "$RELEASE_TAG" kids-kanban.html
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if assets=$(gh release view --repo "$REPOSITORY" --json assets --jq '.assets[].name' -- "$RELEASE_TAG"); then
+            if ! grep -Fxq kids-kanban.html <<< "$assets"; then
+              gh release upload --repo "$REPOSITORY" -- "$RELEASE_TAG" kids-kanban.html
+            fi
+          else
+            gh release create --repo "$REPOSITORY" --verify-tag --generate-notes --latest --title "Kids Kanban $RELEASE_TAG" -- "$RELEASE_TAG" kids-kanban.html
+          fi

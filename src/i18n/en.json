@@ -8,6 +8,15 @@
   "settings.tab.language": "Language",
   "settings.close": "Close",
 
+  "settings.tab.backup": "Backup",
+  "backup.description": "Save or restore kids, boards, tasks, custom images, and settings with a JSON file.",
+  "backup.export": "Export configuration",
+  "backup.import": "Import configuration",
+  "backup.confirm": "Replace the current boards and settings with this backup?",
+  "backup.success": "Configuration imported.",
+  "backup.invalid": "This file is not a supported Kids Kanban backup.",
+  "backup.saveError": "The browser could not save this backup.",
+
   "kids.add": "Add Kid",
   "kids.name": "Name",
   "kids.color": "Color",

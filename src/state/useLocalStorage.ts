@@ -22,5 +22,11 @@ export function useLocalStorage<T>(key: string, initial: () => T) {
     };
   }, [key, value]);
 
-  return [value, setValue] as const;
+  function saveAndReplace(next: T) {
+    localStorage.setItem(key, JSON.stringify(next));
+    window.clearTimeout(timeoutRef.current);
+    setValue(next);
+  }
+
+  return [value, setValue, saveAndReplace] as const;
 }

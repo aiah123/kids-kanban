@@ -8,6 +8,15 @@
   "settings.tab.language": "שפה",
   "settings.close": "סגור",
 
+  "settings.tab.backup": "גיבוי",
+  "backup.description": "אפשר לשמור או לשחזר ילדים, לוחות, משימות, תמונות והגדרות באמצעות קובץ JSON.",
+  "backup.export": "ייצוא הגדרות",
+  "backup.import": "ייבוא הגדרות",
+  "backup.confirm": "להחליף את הלוחות וההגדרות הנוכחיים בתוכן הגיבוי?",
+  "backup.success": "הגיבוי יובא בהצלחה.",
+  "backup.invalid": "הקובץ אינו גיבוי נתמך של לוח המשימות.",
+  "backup.saveError": "הדפדפן לא הצליח לשמור את הגיבוי.",
+
   "kids.add": "הוסף ילד/ה",
   "kids.name": "שם",
   "kids.color": "צבע",

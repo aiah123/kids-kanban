@@ -5,8 +5,9 @@ import { KidsEditor } from './KidsEditor';
 import { ColumnsEditor } from './ColumnsEditor';
 import { SpacesEditor } from './SpacesEditor';
 import { LanguageToggle } from './LanguageToggle';
+import { ConfigBackup } from './ConfigBackup';
 
-type Tab = 'kids' | 'columns' | 'spaces' | 'language';
+type Tab = 'kids' | 'columns' | 'spaces' | 'language' | 'backup';
 
 interface SettingsMenuProps {
   onClose: () => void;
@@ -42,6 +43,9 @@ export function SettingsMenu({ onClose }: SettingsMenuProps) {
           </button>
           <button className={tab === 'language' ? 'active' : ''} onClick={() => setTab('language')}>
             {t('settings.tab.language')}
+          </button>
+          <button className={tab === 'backup' ? 'active' : ''} onClick={() => setTab('backup')}>
+            {t('settings.tab.backup')}
           </button>
         </div>
 
@@ -96,6 +100,7 @@ export function SettingsMenu({ onClose }: SettingsMenuProps) {
         )}
 
         {tab === 'language' && <LanguageToggle />}
+        {tab === 'backup' && <ConfigBackup />}
       </div>
     </div>
   );

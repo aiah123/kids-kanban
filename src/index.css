@@ -612,3 +612,50 @@ select {
 @media (prefers-reduced-motion: reduce) {
   .task-countdown span { animation: none; }
 }
+
+.celebration-medal {
+  display: grid;
+  justify-items: center;
+  line-height: 1;
+}
+
+.celebration-medal::before {
+  content: '';
+  width: 50px;
+  height: 34px;
+  margin-bottom: -8px;
+  background: linear-gradient(65deg, #2563eb 48%, #60a5fa 49% 51%, #dc2626 52%);
+  clip-path: polygon(0 0, 100% 0, 73% 100%, 27% 100%);
+}
+
+.celebration-medal-face {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border: 4px solid #d97706;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 24%, #fef3c7, #facc15 58%, #f59e0b);
+  box-shadow: inset 0 0 0 2px #fde68a;
+}
+
+.celebration-medal-face::before {
+  content: '';
+  position: absolute;
+  top: 17px;
+  left: 16px;
+  width: 6px;
+  height: 8px;
+  border-radius: 50%;
+  background: #713f12;
+  box-shadow: 22px 0 #713f12;
+}
+
+.celebration-medal-face > span {
+  position: absolute;
+  top: 29px;
+  left: 19px;
+  width: 22px;
+  height: 13px;
+  border-bottom: 4px solid #713f12;
+  border-radius: 0 0 50% 50%;
+}

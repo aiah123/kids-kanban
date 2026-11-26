@@ -27,7 +27,13 @@ export function TaskCelebration({ variant }: { variant: number }) {
           </span>
         ))}
         <span className="celebration-dancer">
-          <span className={`celebration-icon celebration-${motion}`}>{icon}</span>
+          <span className={`celebration-icon celebration-${motion}`}>
+            {icon === 'smiling-medal' ? (
+              <span className="celebration-medal">
+                <span className="celebration-medal-face"><span /></span>
+              </span>
+            ) : icon}
+          </span>
         </span>
       </div>
       <span className="celebration-message">{t('task.celebration')}</span>

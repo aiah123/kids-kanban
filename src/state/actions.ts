@@ -29,4 +29,4 @@ export type Action =
       patch: Partial<Pick<SpaceTask, 'name' | 'icon' | 'color'>>;
     }
   | { type: 'REMOVE_SPACE_TASK'; spaceId: string; taskId: string }
-  | { type: 'APPLY_SPACE_TO_BOARD'; boardId: string; spaceId: string };
+  | { type: 'SET_BOARD_SPACE'; boardId: string; spaceId: string; enabled: boolean };

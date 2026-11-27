@@ -30,6 +30,7 @@ export interface Space {
 export interface BoardTask {
   id: string;
   spaceTaskId: string;
+  spaceId?: string;
   name: string;
   icon: Icon;
   color: string;
@@ -42,6 +43,7 @@ export interface Board {
   name: string;
   columns: Column[];
   tasks: BoardTask[];
+  enabledSpaceIds?: string[];
 }
 
 export interface Kid {

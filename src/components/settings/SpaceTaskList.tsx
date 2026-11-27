@@ -19,7 +19,7 @@ export function SpaceTaskList({ tasks, onAdd, onUpdate, onRemove }: SpaceTaskLis
   const [addingIconOpen, setAddingIconOpen] = useState(false);
 
   return (
-    <div style={{ marginInlineStart: 12 }}>
+    <div className="space-task-list">
       {tasks.map((task) => (
         <div key={task.id}>
           <div className="list-item">
@@ -27,6 +27,8 @@ export function SpaceTaskList({ tasks, onAdd, onUpdate, onRemove }: SpaceTaskLis
               type="button"
               className="task-icon"
               style={{ border: '1px solid var(--border)', borderRadius: 8, background: 'none' }}
+              aria-label={`${t('icon.choose')}: ${task.name}`}
+              aria-expanded={expandedTaskId === task.id}
               onClick={() => setExpandedTaskId(expandedTaskId === task.id ? null : task.id)}
             >
               {task.icon.type === 'emoji' ? task.icon.value : <img src={task.icon.value} alt="" />}
@@ -34,17 +36,19 @@ export function SpaceTaskList({ tasks, onAdd, onUpdate, onRemove }: SpaceTaskLis
             <input
               type="text"
               className="grow"
+              aria-label={t('spaces.taskName')}
               value={task.name}
               onChange={(e) => onUpdate(task.id, { name: e.target.value })}
             />
             <input
               type="color"
+              aria-label={t('spaces.color')}
               value={task.color}
               onChange={(e) => onUpdate(task.id, { color: e.target.value })}
             />
-            <button className="btn danger" onClick={() => onRemove(task.id)}>
-              {t('columns.remove')}
-            </button>
+            <button type="button" className="btn danger square-control"
+              aria-label={`${t('spaces.removeTask')}: ${task.name}`} title={t('spaces.removeTask')}
+              onClick={() => onRemove(task.id)}>−</button>
           </div>
           {expandedTaskId === task.id && (
             <IconPicker value={task.icon} onChange={(icon) => onUpdate(task.id, { icon })} />
@@ -52,11 +56,19 @@ export function SpaceTaskList({ tasks, onAdd, onUpdate, onRemove }: SpaceTaskLis
         </div>
       ))}
 
-      <div className="form-row" style={{ marginBlockStart: 12, alignItems: 'flex-start' }}>
+      <form className="form-row space-create task-create" onSubmit={(event) => {
+        event.preventDefault();
+        if (!newName.trim()) return;
+        onAdd(newName.trim(), newIcon, newColor);
+        setNewName('');
+        setAddingIconOpen(false);
+      }}>
         <button
           type="button"
           className="task-icon"
           style={{ border: '1px solid var(--border)', borderRadius: 8, background: 'none' }}
+          aria-label={t('icon.choose')}
+          aria-expanded={addingIconOpen}
           onClick={() => setAddingIconOpen((v) => !v)}
         >
           {newIcon.type === 'emoji' ? newIcon.value : <img src={newIcon.value} alt="" />}
@@ -64,21 +76,13 @@ export function SpaceTaskList({ tasks, onAdd, onUpdate, onRemove }: SpaceTaskLis
         <input
           type="text"
           placeholder={t('spaces.taskPlaceholder')}
+          aria-label={t('spaces.taskPlaceholder')}
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
         />
-        <input type="color" value={newColor} onChange={(e) => setNewColor(e.target.value)} />
-        <button
-          className="btn"
-          onClick={() => {
-            if (!newName.trim()) return;
-            onAdd(newName.trim(), newIcon, newColor);
-            setNewName('');
-          }}
-        >
-          {t('spaces.addTask')}
-        </button>
-      </div>
+        <input type="color" aria-label={t('spaces.color')} value={newColor} onChange={(e) => setNewColor(e.target.value)} />
+        <button className="btn square-control" aria-label={t('spaces.addTask')} title={t('spaces.addTask')} disabled={!newName.trim()}>+</button>
+      </form>
       {addingIconOpen && <IconPicker value={newIcon} onChange={setNewIcon} />}
     </div>
   );

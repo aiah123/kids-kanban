@@ -92,10 +92,6 @@ export function SettingsMenu({ onClose }: SettingsMenuProps) {
             onRemoveTask={(spaceId, taskId) =>
               dispatch({ type: 'REMOVE_SPACE_TASK', spaceId, taskId })
             }
-            onApply={(spaceId) =>
-              activeBoard &&
-              dispatch({ type: 'APPLY_SPACE_TO_BOARD', boardId: activeBoard.id, spaceId })
-            }
           />
         )}
 

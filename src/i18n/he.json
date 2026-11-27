@@ -34,6 +34,7 @@
   "spaces.add": "הוסף מרחב",
   "spaces.name": "שם",
   "spaces.color": "צבע",
+  "spaces.confirmRemove": "למחוק את ״{name}״? המשימות שלו יוסרו מכל הלוחות.",
   "spaces.remove": "הסר",
   "spaces.addPlaceholder": "שם המרחב החדש",
   "spaces.apply": "הוסף ללוח",
@@ -42,7 +43,7 @@
   "spaces.addTask": "הוסף משימה",
   "spaces.taskPlaceholder": "שם המשימה החדשה",
 
-  "icon.emoji": "אימוג'י",
+  "icon.library": "ספריית ציורים",
   "icon.upload": "העלה תמונה",
   "icon.choose": "בחר סמל",
 
@@ -54,5 +55,12 @@
   "task.celebration": "כל הכבוד!",
   "task.cancel": "ביטול",
 
-  "board.empty": "אין עדיין משימות. הוסיפו מרחב מההגדרות והוסיפו אותו כאן!"
+  "spaces.onBoard": "מרחבים בלוח",
+  "spaces.empty": "אין מרחבים עדיין. אפשר להוסיף בהגדרות.",
+  "spaces.taskName": "שם המשימה",
+  "spaces.removeTask": "הסר משימה",
+  "icon.diaper": "חיתול",
+  "icon.washHands": "שטיפת ידיים",
+  "icon.book": "ספר פתוח",
+  "board.empty": "אין משימות בלוח. פתחו את מרחבים בלוח ובחרו שגרה."
 }

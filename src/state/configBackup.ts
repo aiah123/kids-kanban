@@ -43,6 +43,7 @@ function isSpace(value: unknown): value is Space {
 
 function isBoardTask(value: unknown): value is BoardTask {
   return isNamedColor(value) && isIcon(value.icon) && typeof value.spaceTaskId === 'string'
+    && (value.spaceId === undefined || typeof value.spaceId === 'string')
     && typeof value.columnId === 'string' && Number.isFinite(value.order);
 }
 
@@ -50,7 +51,11 @@ function isBoard(value: unknown): value is Board {
   if (!isRecord(value) || typeof value.id !== 'string' || !value.id
     || typeof value.name !== 'string' || !isList(value.columns, isColumn)
     || !isList(value.tasks, isBoardTask) || !hasUniqueIds(value.columns)
-    || !hasUniqueIds(value.tasks)) return false;
+    || !hasUniqueIds(value.tasks)
+    || (value.enabledSpaceIds !== undefined && (
+      !Array.isArray(value.enabledSpaceIds)
+      || !value.enabledSpaceIds.every((id) => typeof id === 'string')
+    ))) return false;
 
   const columnIds = new Set(value.columns.map((column) => column.id));
   return value.tasks.every((task) => columnIds.has(task.columnId));

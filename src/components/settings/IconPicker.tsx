@@ -1,12 +1,23 @@
 import { useRef, useState } from 'react';
 import type { Icon } from '../../types';
+import diaper from '../../assets/task-icons/diaper.png?inline';
+import washHands from '../../assets/task-icons/wash-hands.png?inline';
 import { useI18n } from '../../i18n/i18n';
 
+const drawings = [
+  { label: 'icon.diaper', value: diaper },
+  { label: 'icon.washHands', value: washHands },
+];
+
 const EMOJI_OPTIONS = [
-  '🦷', '👕', '🥣', '🎒', '📚', '🧹', '🎮', '🚿', '🛏️', '🧦',
-  '🧴', '🍎', '🥪', '💧', '🧸', '🐶', '🚲', '⚽', '🎨', '🎵',
-  '📖', '✏️', '🧴', '🧻', '🧼', '👟', '🧥', '🪥', '🍽️', '🗑️',
-  '🌟', '⏰', '🧺', '📺', '🛁', '🚪', '🌳', '☀️', '🌙', '✅',
+  '📖', '📚', '✏️', '📝', '🎒', '📏', '✂️', '🖍️', '🎨', '🧩',
+  '🪥', '🦷', '🧼', '🚿', '🛁', '🚽', '🧻', '🧴', '🪮', '🫧',
+  '👕', '👖', '🧦', '👟', '🧥', '🧤', '🧣', '🧢', '👗', '🩴',
+  '🥣', '🍳', '🥞', '🍞', '🥪', '🍚', '🍝', '🍽️', '🍴', '🥛',
+  '🍎', '🍌', '🥕', '🥦', '💧', '🫗', '🧃', '🥗', '🍇', '🍓',
+  '🛏️', '🧸', '🌙', '☀️', '⏰', '💤', '🪟', '🚪', '🔑', '🚌',
+  '🧹', '🧺', '🗑️', '🧽', '🪴', '🐶', '🐈', '🐟', '🪣', '🧰',
+  '🚲', '⚽', '🏀', '🛝', '🏊', '🎵', '🎮', '📺', '🌳', '🌟', '✅',
 ];
 
 interface IconPickerProps {
@@ -16,7 +27,9 @@ interface IconPickerProps {
 
 export function IconPicker({ value, onChange }: IconPickerProps) {
   const { t } = useI18n();
-  const [tab, setTab] = useState<'emoji' | 'image'>(value.type);
+  const [tab, setTab] = useState<'emoji' | 'image'>(
+    value.type === 'image' && !drawings.some((drawing) => drawing.value === value.value) ? 'image' : 'emoji',
+  );
   const fileRef = useRef<HTMLInputElement>(null);
 
   function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -39,7 +52,7 @@ export function IconPicker({ value, onChange }: IconPickerProps) {
           className={tab === 'emoji' ? 'active' : ''}
           onClick={() => setTab('emoji')}
         >
-          {t('icon.emoji')}
+          {t('icon.library')}
         </button>
         <button
           type="button"
@@ -51,10 +64,18 @@ export function IconPicker({ value, onChange }: IconPickerProps) {
       </div>
       {tab === 'emoji' ? (
         <div className="emoji-grid">
+          {drawings.map((drawing) => (
+            <button type="button" key={drawing.label} aria-label={t(drawing.label)} title={t(drawing.label)}
+              className={value.type === 'image' && value.value === drawing.value ? 'selected' : ''}
+              onClick={() => onChange({ type: 'image', value: drawing.value })}>
+              <img src={drawing.value} alt="" />
+            </button>
+          ))}
           {EMOJI_OPTIONS.map((emoji) => (
             <button
               type="button"
               key={emoji}
+              aria-label={emoji === '📖' ? t('icon.book') : undefined}
               className={value.type === 'emoji' && value.value === emoji ? 'selected' : ''}
               onClick={() => onChange({ type: 'emoji', value: emoji })}
             >

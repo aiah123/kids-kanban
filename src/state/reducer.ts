@@ -1,7 +1,8 @@
-import type { AppState, Board, BoardTask } from '../types';
+import type { AppState, Board } from '../types';
 import type { Action } from './actions';
 import { getColumnRole, localizeRoutineNames, makeDefaultColumns } from './defaults';
 import { makeId } from './id';
+import { addMissingSpaceTasks, belongsToSpace, getEnabledSpaceIds } from './boardSpaces';
 
 function updateBoard(state: AppState, boardId: string, fn: (board: Board) => Board): AppState {
   return {
@@ -58,18 +59,13 @@ export function reducer(state: AppState, action: Action): AppState {
     }
 
     case 'ADD_COLUMN':
-      return updateBoard(state, action.boardId, (board) => ({
-        ...board,
-        columns: [
-          ...board.columns,
-          {
-            id: makeId(),
-            name: action.name,
-            color: action.color,
-            order: board.columns.length,
-          },
-        ],
-      }));
+      return updateBoard(state, action.boardId, (board) => {
+        const column = { id: makeId(), name: action.name, color: action.color, order: board.columns.length };
+        const updated = { ...board, columns: [...board.columns, column] };
+        if (board.columns.length > 0) return updated;
+        const enabled = getEnabledSpaceIds(board, state.spaces);
+        return state.spaces.filter((space) => enabled.includes(space.id)).reduce(addMissingSpaceTasks, updated);
+      });
 
     case 'UPDATE_COLUMN':
       return updateBoard(state, action.boardId, (board) => ({
@@ -125,63 +121,68 @@ export function reducer(state: AppState, action: Action): AppState {
         spaces: state.spaces.map((s) => (s.id === action.spaceId ? { ...s, ...action.patch } : s)),
       };
 
-    case 'REMOVE_SPACE':
-      return { ...state, spaces: state.spaces.filter((s) => s.id !== action.spaceId) };
-
-    case 'ADD_SPACE_TASK':
+    case 'REMOVE_SPACE': {
+      const space = state.spaces.find((item) => item.id === action.spaceId);
+      if (!space) return state;
       return {
         ...state,
-        spaces: state.spaces.map((s) =>
-          s.id === action.spaceId
-            ? {
-                ...s,
-                tasks: [
-                  ...s.tasks,
-                  { id: makeId(), name: action.name, icon: action.icon, color: action.color },
-                ],
-              }
-            : s
-        ),
+        spaces: state.spaces.filter((item) => item.id !== space.id),
+        boards: state.boards.map((board) => ({
+          ...board,
+          enabledSpaceIds: board.enabledSpaceIds?.filter((id) => id !== space.id),
+          tasks: board.tasks.filter((task) => !belongsToSpace(task, space)),
+        })),
       };
+    }
+
+    case 'ADD_SPACE_TASK': {
+      const space = state.spaces.find((item) => item.id === action.spaceId);
+      if (!space) return state;
+      const task = { id: makeId(), name: action.name, icon: action.icon, color: action.color };
+      const updated = { ...space, tasks: [...space.tasks, task] };
+      return {
+        ...state,
+        spaces: state.spaces.map((item) => item.id === space.id ? updated : item),
+        boards: state.boards.map((board) => getEnabledSpaceIds(board, state.spaces).includes(space.id)
+          ? addMissingSpaceTasks(board, updated)
+          : board),
+      };
+    }
 
     case 'UPDATE_SPACE_TASK':
+    case 'REMOVE_SPACE_TASK': {
+      const space = state.spaces.find((item) => item.id === action.spaceId);
+      if (!space) return state;
+      const matches = (task: Board['tasks'][number]) =>
+        task.spaceTaskId === action.taskId && belongsToSpace(task, space);
+      const removing = action.type === 'REMOVE_SPACE_TASK';
       return {
         ...state,
-        spaces: state.spaces.map((s) =>
-          s.id === action.spaceId
-            ? {
-                ...s,
-                tasks: s.tasks.map((t) => (t.id === action.taskId ? { ...t, ...action.patch } : t)),
-              }
-            : s
-        ),
+        spaces: state.spaces.map((item) => item.id !== space.id ? item : {
+          ...item,
+          tasks: removing
+            ? item.tasks.filter((task) => task.id !== action.taskId)
+            : item.tasks.map((task) => task.id === action.taskId ? { ...task, ...action.patch } : task),
+        }),
+        boards: state.boards.map((board) => ({
+          ...board,
+          enabledSpaceIds: getEnabledSpaceIds(board, state.spaces),
+          tasks: removing
+            ? board.tasks.filter((task) => !matches(task))
+            : board.tasks.map((task) => matches(task) ? { ...task, ...action.patch } : task),
+        })),
       };
+    }
 
-    case 'REMOVE_SPACE_TASK':
-      return {
-        ...state,
-        spaces: state.spaces.map((s) =>
-          s.id === action.spaceId ? { ...s, tasks: s.tasks.filter((t) => t.id !== action.taskId) } : s
-        ),
-      };
-
-    case 'APPLY_SPACE_TO_BOARD': {
-      const space = state.spaces.find((s) => s.id === action.spaceId);
+    case 'SET_BOARD_SPACE': {
+      const space = state.spaces.find((item) => item.id === action.spaceId);
       if (!space) return state;
       return updateBoard(state, action.boardId, (board) => {
-        const firstColumnId = board.columns[0]?.id;
-        if (!firstColumnId) return board;
-        const startOrder = board.tasks.filter((t) => t.columnId === firstColumnId).length;
-        const newTasks: BoardTask[] = space.tasks.map((st, i) => ({
-          id: makeId(),
-          spaceTaskId: st.id,
-          name: st.name,
-          icon: st.icon,
-          color: st.color,
-          columnId: firstColumnId,
-          order: startOrder + i,
-        }));
-        return { ...board, tasks: [...board.tasks, ...newTasks] };
+        const enabledSpaceIds = new Set(getEnabledSpaceIds(board, state.spaces));
+        if (action.enabled) enabledSpaceIds.add(space.id);
+        else enabledSpaceIds.delete(space.id);
+        const updated = { ...board, enabledSpaceIds: [...enabledSpaceIds] };
+        return action.enabled ? addMissingSpaceTasks(updated, space) : updated;
       });
     }
 

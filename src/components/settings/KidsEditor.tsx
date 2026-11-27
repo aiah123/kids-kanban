@@ -32,7 +32,10 @@ export function KidsEditor({ kids, onRename, onColor, onRemove, onAdd }: KidsEdi
           />
           <button
             className="btn danger"
-            onClick={() => onRemove(kid.id)}
+            onClick={() => {
+              const message = t('kids.confirmRemove').replace('{name}', () => kid.name || t('kids.name'));
+              if (window.confirm(message)) onRemove(kid.id);
+            }}
             disabled={kids.length <= 1}
           >
             {t('kids.remove')}

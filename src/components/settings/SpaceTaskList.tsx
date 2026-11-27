@@ -48,7 +48,10 @@ export function SpaceTaskList({ tasks, onAdd, onUpdate, onRemove }: SpaceTaskLis
             />
             <button type="button" className="btn danger square-control"
               aria-label={`${t('spaces.removeTask')}: ${task.name}`} title={t('spaces.removeTask')}
-              onClick={() => onRemove(task.id)}>−</button>
+              onClick={() => {
+              const message = t('spaces.confirmRemoveTask').replace('{name}', () => task.name || t('spaces.taskName'));
+              if (window.confirm(message)) onRemove(task.id);
+            }}>−</button>
           </div>
           {expandedTaskId === task.id && (
             <IconPicker value={task.icon} onChange={(icon) => onUpdate(task.id, { icon })} />

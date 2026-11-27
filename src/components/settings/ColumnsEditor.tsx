@@ -50,7 +50,10 @@ export function ColumnsEditor({ columns, onUpdate, onRemove, onReorder, onAdd }:
           >
             {t('columns.moveDown')}
           </button>
-          <button className="btn danger" onClick={() => onRemove(column.id)}>
+          <button className="btn danger" onClick={() => {
+              const message = t('columns.confirmRemove').replace('{name}', () => column.name || t('columns.name'));
+              if (window.confirm(message)) onRemove(column.id);
+            }}>
             {t('columns.remove')}
           </button>
         </div>
